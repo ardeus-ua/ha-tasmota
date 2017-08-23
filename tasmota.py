@@ -26,7 +26,7 @@ _LOGGER = logging.getLogger(__name__)
 
 DEPENDENCIES = ['mqtt']
 
-CONF_DEVICE_NAME = 'brightness_command_topic'
+CONF_SONOFF_NAME = 'sonoff_name'
 
 CONF_BRIGHTNESS_COMMAND_TOPIC = 'brightness_command_topic'
 CONF_BRIGHTNESS_SCALE = 'brightness_scale'
