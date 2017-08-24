@@ -293,8 +293,8 @@ class MqttLight(Light):
 
         if ATTR_BRIGHTNESS in kwargs and \
            self._topic[CONF_BRIGHTNESS_COMMAND_TOPIC] is not None:
-            percent_bright = float(kwargs[ATTR_BRIGHTNESS]) / 255
-            device_brightness = int(percent_bright * self._brightness_scale)
+            device_brightness = int(float(kwargs[ATTR_BRIGHTNESS]) / 2.55)
+
             mqtt.async_publish(
                 self.hass, self._topic[CONF_BRIGHTNESS_COMMAND_TOPIC],
                 device_brightness, self._qos, self._retain)
