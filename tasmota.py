@@ -179,9 +179,8 @@ class MqttLight(Light):
         @callback
         def brightness_received(topic, payload, qos):
             """Handle new MQTT messages for the brightness."""
-            device_value = float(templates[CONF_BRIGHTNESS](payload))
-            percent_bright = device_value / self._brightness_scale
-            self._brightness = int(percent_bright * 255)
+            device_value = (templates[CONF_BRIGHTNESS](payload))
+            self._brightness = int(device_value * 2.55)
             self.hass.async_add_job(self.async_update_ha_state())
 
         if self._topic[CONF_BRIGHTNESS_STATE_TOPIC] is not None:
