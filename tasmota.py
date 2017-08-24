@@ -196,8 +196,8 @@ class MqttLight(Light):
         @callback
         def rgb_received(topic, payload, qos):
             """Handle new MQTT messages for RGB."""
-            self._rgb = [int(val) for val in
-                         templates[CONF_RGB](payload).split(',')]
+            rgb_hex = templates[CONF_RGB](payload)
+			self._rgb = hex_to_rgb(rgb_hex)
             self.hass.async_add_job(self.async_update_ha_state())
 
         if self._topic[CONF_RGB_STATE_TOPIC] is not None:
