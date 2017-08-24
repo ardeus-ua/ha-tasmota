@@ -27,18 +27,20 @@ _LOGGER = logging.getLogger(__name__)
 DEPENDENCIES = ['mqtt']
 
 CONF_SONOFF_NAME = 'sonoff_name'
+CONF_STAT = 'prefix_stat'
+CONF_CMND = 'prefix_cmnd'
+CONF_TELE = 'prefix_tele'
 
-CONF_BRIGHTNESS_COMMAND_TOPIC = 'brightness_command_topic'
-CONF_BRIGHTNESS_SCALE = 'brightness_scale'
-CONF_BRIGHTNESS_STATE_TOPIC = 'brightness_state_topic'
-CONF_BRIGHTNESS_VALUE_TEMPLATE = 'brightness_value_template'
+CONF_BRIGHTNESS_COMMAND_TOPIC = 'prefix_cmnd' + "/" + 'sonoff_name' + '/DIMMER'
+CONF_BRIGHTNESS_STATE_TOPIC = 'prefix_stat' + "/" + 'sonoff_name' + '/DIMMER'
+CONF_BRIGHTNESS_VALUE_TEMPLATE = "{{value_json.Dimmer}}"
 CONF_EFFECT_COMMAND_TOPIC = 'effect_command_topic'
 CONF_EFFECT_LIST = 'effect_list'
 CONF_EFFECT_STATE_TOPIC = 'effect_state_topic'
 CONF_EFFECT_VALUE_TEMPLATE = 'effect_value_template'
-CONF_RGB_COMMAND_TOPIC = 'rgb_command_topic'
-CONF_RGB_STATE_TOPIC = 'rgb_state_topic'
-CONF_RGB_VALUE_TEMPLATE = 'rgb_value_template'
+CONF_RGB_COMMAND_TOPIC = 'prefix_cmnd' + "/" + 'sonoff_name' + '/COLOR'
+CONF_RGB_STATE_TOPIC = 'prefix_stat' + "/" + 'sonoff_name' + '/COLOR'
+CONF_RGB_VALUE_TEMPLATE = "{{value_json.Color}}"
 CONF_STATE_VALUE_TEMPLATE = 'state_value_template'
 
 DEFAULT_BRIGHTNESS_SCALE = 100
