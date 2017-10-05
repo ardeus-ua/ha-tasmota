@@ -26,23 +26,22 @@ _LOGGER = logging.getLogger(__name__)
 
 DEPENDENCIES = ['mqtt']
 
-CONF_SONOFF_NAME = 'sonoff_name'
-CONF_STAT = 'prefix_stat'
-CONF_CMND = 'prefix_cmnd'
-CONF_TELE = 'prefix_tele'
+CONF_SONOFF = 'sonoff_name'
 
-CONF_BRIGHTNESS_COMMAND_TOPIC = 'prefix_cmnd' + "/" + 'sonoff_name' + '/DIMMER'
-CONF_BRIGHTNESS_STATE_TOPIC = 'prefix_stat' + "/" + 'sonoff_name' + '/DIMMER'
-CONF_BRIGHTNESS_VALUE_TEMPLATE = "{{value_json.Dimmer}}"
+CONF_BRIGHTNESS_COMMAND_TOPIC = 'brightness_command_topic'
+CONF_BRIGHTNESS_SCALE = 'brightness_scale'
+CONF_BRIGHTNESS_STATE_TOPIC = 'brightness_state_topic'
+CONF_BRIGHTNESS_VALUE_TEMPLATE = 'brightness_value_template'
 CONF_EFFECT_COMMAND_TOPIC = 'effect_command_topic'
 CONF_EFFECT_LIST = 'effect_list'
 CONF_EFFECT_STATE_TOPIC = 'effect_state_topic'
 CONF_EFFECT_VALUE_TEMPLATE = 'effect_value_template'
-CONF_RGB_COMMAND_TOPIC = 'prefix_cmnd' + "/" + 'sonoff_name' + '/COLOR'
-CONF_RGB_STATE_TOPIC = 'prefix_stat' + "/" + 'sonoff_name' + '/COLOR'
-CONF_RGB_VALUE_TEMPLATE = "{{value_json.Color}}"
+CONF_RGB_COMMAND_TOPIC = 'rgb_command_topic'
+CONF_RGB_STATE_TOPIC = 'rgb_state_topic'
+CONF_RGB_VALUE_TEMPLATE = 'rgb_value_template'
 CONF_STATE_VALUE_TEMPLATE = 'state_value_template'
 
+DEFAULT_EFFECT_LIST = ['Single Color', 'Wakeup Light', 'Clock', 'Incadescent Light', 'RGB Pattern', 'Christmas Pattern', 'Hannukah Pattern', 'Kwanzaa Pattern', 'Rainbow Pattern', 'Fire Pattern']
 DEFAULT_BRIGHTNESS_SCALE = 100
 DEFAULT_STAT = 'stat'
 DEFAULT_CMND = 'cmnd'
@@ -59,7 +58,7 @@ PLATFORM_SCHEMA = mqtt.MQTT_RW_PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_BRIGHTNESS_STATE_TOPIC): mqtt.valid_subscribe_topic,
     vol.Optional(CONF_BRIGHTNESS_VALUE_TEMPLATE): cv.template,
     vol.Optional(CONF_EFFECT_COMMAND_TOPIC): mqtt.valid_publish_topic,
-    vol.Optional(CONF_EFFECT_LIST): vol.All(cv.ensure_list, [cv.string]),
+    vol.Optional(CONF_EFFECT_LIST, default=DEFAULT_EFFECT_LIST): vol.All(cv.ensure_list, [cv.string]),
     vol.Optional(CONF_EFFECT_STATE_TOPIC): mqtt.valid_subscribe_topic,
     vol.Optional(CONF_EFFECT_VALUE_TEMPLATE): cv.template,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
@@ -182,7 +181,7 @@ class MqttLight(Light):
         def brightness_received(topic, payload, qos):
             """Handle new MQTT messages for the brightness."""
             device_value = templates[CONF_BRIGHTNESS](payload)
-            self._brightness = int(device_value * 2.55)
+            self._brightness = int(int(device_value) * 2.55)
             self.hass.async_add_job(self.async_update_ha_state())
 
         if self._topic[CONF_BRIGHTNESS_STATE_TOPIC] is not None:
@@ -199,7 +198,7 @@ class MqttLight(Light):
         def rgb_received(topic, payload, qos):
             """Handle new MQTT messages for RGB."""
             rgb_hex = templates[CONF_RGB](payload)
-			self._rgb = hex_to_rgb(rgb_hex)
+            self._rgb = rgb_hex_to_rgb_list(rgb_hex)
             self.hass.async_add_job(self.async_update_ha_state())
 
         if self._topic[CONF_RGB_STATE_TOPIC] is not None:
@@ -295,7 +294,7 @@ class MqttLight(Light):
 
         if ATTR_BRIGHTNESS in kwargs and \
            self._topic[CONF_BRIGHTNESS_COMMAND_TOPIC] is not None:
-            device_brightness = int(float(kwargs[ATTR_BRIGHTNESS]) / 2.55)
+            device_brightness = int(int(kwargs[ATTR_BRIGHTNESS]) / 2.55)
 
             mqtt.async_publish(
                 self.hass, self._topic[CONF_BRIGHTNESS_COMMAND_TOPIC],
