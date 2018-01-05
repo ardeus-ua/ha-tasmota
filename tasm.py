@@ -340,9 +340,10 @@ class MqttLight(Light):
            self._topic[CONF_EFFECT_COMMAND_TOPIC] is not None:
             effect = kwargs[ATTR_EFFECT]
             if effect in self._effect_list:
+                effect_send = kwargs[ATTR_EFFECT].index(effect)
                 mqtt.async_publish(
                     self.hass, self._topic[CONF_EFFECT_COMMAND_TOPIC],
-                    effect, self._qos, self._retain)
+                    effect_send, self._qos, self._retain)
 
                 if self._optimistic_effect:
                     self._effect = kwargs[ATTR_EFFECT]
