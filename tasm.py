@@ -21,6 +21,7 @@ from homeassistant.const import (
     CONF_RGB, CONF_STATE, CONF_VALUE_TEMPLATE)
 from homeassistant.components.mqtt import (
     CONF_COMMAND_TOPIC, CONF_QOS, CONF_RETAIN, CONF_STATE_TOPIC)
+from homeassistant.util.color import rgb_hex_to_rgb_list
 import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
@@ -48,7 +49,7 @@ DEFAULT_OPTIMISTIC = False
 DEFAULT_PAYLOAD_OFF = 'OFF'
 DEFAULT_PAYLOAD_ON = 'ON'
 DEFAULT_ON_COMMAND_TYPE = 'last'
-DEFAULT_EFFECT_LIST = ['Single Color', 'Wakeup Light', 'Clock', 'Incadescent Light', 'RGB Pattern', 'Christmas Pattern', 'Hannukah Pattern', 'Kwanzaa Pattern', 'Rainbow Pattern', 'Fire Pattern']
+DEFAULT_EFFECT_LIST = ['Single Color', 'Wakeup Light', 'Cycle RGB', 'Cycle RBG', 'Clock', 'Incadescent Light', 'RGB Pattern', 'Christmas Pattern', 'Hannukah Pattern', 'Kwanzaa Pattern', 'Rainbow Pattern', 'Fire Pattern']
 
 VALUES_ON_COMMAND_TYPE = ['first', 'last', 'brightness']
 
