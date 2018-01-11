@@ -222,9 +222,8 @@ class MqttLight(Light):
         @callback
         def effect_received(topic, payload, qos):
             """Handle new MQTT messages for effect."""
-            effect_str = templates[CONF_EFFECT](payload)
-            effect_num = int(effect_str)
-            self._effect = effect_list[effect_num]
+            effect_num = int(templates[CONF_EFFECT](payload))
+            self._effect = self._effect_list[effect_num]
             self.async_schedule_update_ha_state()
 
         if self._topic[CONF_EFFECT_STATE_TOPIC] is not None:
