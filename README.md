@@ -26,7 +26,7 @@ Copy [tasm.py](https://github.com/ardeus-ua/ha-tasmota/tasm.py) to your custom_c
         brightness_value_template: "{{ value_json.Dimmer }}"
         rgb_state_topic: "stat/project/RESULT"
         rgb_command_topic: "cmnd/project/Color2"
-        rgb_value_template: "{{ value_json.Color2 }}"
+        rgb_value_template: "{{ value_json.Color }}"
         effect_command_topic: "cmnd/project/Scheme"
         effect_state_topic: "stat/project/RESULT"
         effect_value_template: "{{  value_json.Scheme  }}"
