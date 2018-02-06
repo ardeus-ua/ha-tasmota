@@ -10,7 +10,7 @@ Based on inbuilt [MQTT Light](https://home-assistant.io/components/light.mqtt/) 
 
 ## Installation:
 
-Copy [tasm.py](https://github.com/ardeus-ua/ha-tasmota/tasm.py) to your custom_components/light folder (usually in /home/homeassistant/.homeassistant/light/) and add your device(s) to the light section in configuration.yaml replacing "project" with your device name.
+Copy [tasm.py](https://github.com/ardeus-ua/ha-tasmota/tasm.py) to your custom_components/light folder (usually in /home/homeassistant/.homeassistant/custom_components/light/) and add your device(s) to the light section in configuration.yaml replacing "project" with your device name.
 
 ## Sample config:
 
